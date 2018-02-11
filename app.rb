@@ -24,9 +24,10 @@ pairs = response.parsed_response["pairs"]
 liqui_pairs = []
 
 # pull the pairs, populate to liqui_pairs
+# if not hidden
 pairs.each do |pair, data|
   set = pair.split("_")
-  liqui_pairs.push set
+  liqui_pairs.push set if data["hidden"] == 0
 end
 
 # liqui_pairs.each do |pair|
@@ -36,7 +37,7 @@ end
 # end
 
 # pairs with ethereum as base pair
-eth_base = liqui_pairs.select { |pair| pair[1].downcase == "eth"}
+eth_base = liqui_pairs.select { |pair| pair[1].downcase == "eth" }
 
 # tokens
 eth_tokens = eth_base.map { |pair| pair[0] }
@@ -52,7 +53,12 @@ eth_tokens.each do |token|
   end
 end
 
-p liqui_avail.map {|item| item.upcase}
+liqui_avail.map! {|item| item.upcase}
+p liqui_avail.sort!
+
 puts "universe: #{coins.count}"
 puts "tokens not on bittrex: #{target_tokens.count}"
 puts "tokens not on bittrex, on liqui: #{liqui_avail.count}"
+
+puts "*** on liqui ***"
+p liqui_avail
