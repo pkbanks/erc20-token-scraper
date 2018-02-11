@@ -1,10 +1,26 @@
 require './eidoo'
 
+# returns an array of coin objects
+# from Eidoo.io, and assigns it to coins
 coins = Eidoo.new.coins
 
-p coins
+items = [
+  "BMC",
+  "IND",
+  "MGO",
+  "NET",
+  "NEU",
+  "PRO",
+  "SRN",
+  "STX",
+  "TAAS",
+  "XID"
+]
 
-
+items.each do |sym|
+  target = coins.select { |coin| coin.symbol == sym }.first
+  puts "#{target.symbol}, #{target.price}"
+end
 
 
 

@@ -20,9 +20,6 @@ class Eidoo
     counter = 0
     @coin_data.each do |data|
       @coins.push(Coin.new data)
-      if counter == 12
-        p data.css('.market h4').text
-      end
       counter += 1
     end
   end
@@ -46,13 +43,14 @@ class Coin
   # from css-selected row
   def initialize(data)
     name_info = data.css('.coin h4').text
-    @market_cap = data.css('.market h4').text
+    # @market_cap = data.css('.market h4').text
 
     @symbol = /\(\w{1,}\)/.match(name_info).to_s[1..-2]    # select everything inside ()
     @name = /^.*\(/.match(name_info).to_s[0..-2].strip  # select everything until the opening (
     
-    # @market_cap = market_cap
-    #data.css('.market h4').text #.text[1..-1].delete(",").to_i   # strip out commas and leading $
+    @market_cap =  data.css('.market h4').text[1..-1].delete(",").to_i   # strip out commas and leading $
+
+    @price = data.css('.price h4').text[1..-1].delete(",").to_f
   end
 
   def symbol
@@ -65,6 +63,10 @@ class Coin
 
   def market_cap
     return @market_cap
+  end
+
+  def price
+    return @price
   end
 end
 
